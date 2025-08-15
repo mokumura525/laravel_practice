@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800">
-            詳細（ID: {{ $post->id }}）
+            記事詳細（ID: {{ $post->id }}）
         </h2>
     </x-slot>
 
