@@ -6,6 +6,7 @@ use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TaskController;
+use App\Models\Task;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,26 +21,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    // 記事管理のルート
     Route::get('/admin/posts', [PostController::class, 'index'])->name('admin.posts.index');
     Route::get('/admin/posts/detail/{id}', [PostController::class, 'show'])->name('admin.posts.show');
-
     Route::get('/admin/posts/create', [PostController::class, 'create'])->name('admin.posts.create');
     Route::post('/admin/posts/store', [PostController::class, 'store'])->name('admin.posts.store');
-
-    // 編集フォームの表示
     Route::get('/admin/posts/{id}/edit', [PostController::class, 'edit'])->name('admin.posts.edit');
-    // 更新処理の実行
     Route::put('/admin/posts/{id}/update', [PostController::class, 'update'])->name('admin.posts.update');
-    // 削除処理の実行 (DELETEリクエスト)
     Route::delete('/admin/posts/{id}/delete', [PostController::class, 'destroy'])->name('admin.posts.delete');
 
     // タスク管理のルート
     Route::get('/admin/tasks', [TaskController::class, 'index'])->name('admin.tasks.index');
-    Route::get('/admin/tasks/create', [TaskController::class, 'create'])->name('admin.tasks.create');
-    Route::post('/admin/tasks/{id}/edit', [TaskController::class, 'edit'])->name('admin.tasks.edit');
     Route::get('/admin/tasks/{id}/detail', [TaskController::class, 'detail'])->name('admin.tasks.detail');
+    Route::get('/admin/tasks/create', [TaskController::class, 'create'])->name('admin.tasks.create');
     Route::post('/admin/tasks/store', [TaskController::class, 'store'])->name('admin.tasks.store');
-    Route::delete('/admin/tasks/{id}/delete', [PostController::class, 'destroy'])->name('admin.tasks.delete');
+    Route::get('/admin/tasks/{id}/edit', [TaskController::class, 'edit'])->name('admin.tasks.edit');
+    Route::put('/admin/tasks/{id}/update', [TaskController::class, 'update'])->name('admin.tasks.update');
+    Route::delete('/admin/tasks/{id}/delete', [TaskController::class, 'destroy'])->name('admin.tasks.delete');
 
 });
 

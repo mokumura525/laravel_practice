@@ -47,8 +47,7 @@ class TaskController extends Controller
     public function edit($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
-        $Task = Task::findOrFail($id);
-        
+        $task = Task::findOrFail($id);
         return view('admin.tasks.create', compact('task'));
     }
 
