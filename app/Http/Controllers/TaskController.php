@@ -8,18 +8,16 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-  public function index()
+    public function index()
     {
-        $tasks = Task::all();
-        return view('admin.tasks.index', compact('tasks'));
+        $task = Task::all();
+        return view('admin.tasks.index', compact('task'));
     }
      public function detail($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
-        $Task = Task::findOrFail($id);
-
-        // ビューにタスクデータを渡して表示
-        return view('admin.tasks.detail', compact('tasks'));
+        $task = Task::findOrFail($id);
+        return view('admin.tasks.detail', compact('task'));
     }
     public function create()
     {
@@ -46,12 +44,12 @@ class TaskController extends Controller
 
         return redirect(route('admin.tasks.index'))->with('success', 'タスクが正常に投稿されました。');
     }
- public function edit($id)
+    public function edit($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
         $Task = Task::findOrFail($id);
         
-        return view('admin.Tasks.create', compact('Task'));
+        return view('admin.tasks.create', compact('task'));
     }
 
     public function update(Request $request, $id)
@@ -62,7 +60,7 @@ class TaskController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // 編集フォームのルートにリダイレクト
-            return redirect(route('admin.Tasks.edit', $id))
+            return redirect(route('admin.tasks.edit', $id))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -75,7 +73,7 @@ class TaskController extends Controller
         $Task->saveTask($request);
 
         // 記事一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.Tasks.index'))->with('success', 'タスクが正常に更新されました。');
+        return redirect(route('admin.tasks.index'))->with('success', 'タスクが正常に更新されました。');
     }
 
       public function destroy($id)
@@ -87,7 +85,7 @@ class TaskController extends Controller
         $Task->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
 
         // 記事一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.Tasks.index'))->with('success', 'タスクが正常に削除されました。');
+        return redirect(route('admin.tasks.index'))->with('success', 'タスクが正常に削除されました。');
     }
 
 

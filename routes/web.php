@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/tasks/{id}/edit', [TaskController::class, 'edit'])->name('admin.tasks.edit');
     Route::get('/admin/tasks/{id}/detail', [TaskController::class, 'detail'])->name('admin.tasks.detail');
     Route::post('/admin/tasks/store', [TaskController::class, 'store'])->name('admin.tasks.store');
+    Route::delete('/admin/tasks/{id}/delete', [PostController::class, 'destroy'])->name('admin.tasks.delete');
 
 });
 
