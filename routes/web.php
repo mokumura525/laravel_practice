@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/tasks/create', [TaskController::class, 'create'])->name('admin.tasks.create');
     Route::post('/admin/tasks/{id}/edit', [TaskController::class, 'edit'])->name('admin.tasks.edit');
     Route::get('/admin/tasks/{id}/detail', [TaskController::class, 'detail'])->name('admin.tasks.detail');
-    Route::post('/admin/tasks/store', [PostController::class, 'store'])->name('admin.tasks.store');
+    Route::post('/admin/tasks/store', [TaskController::class, 'store'])->name('admin.tasks.store');
 
 });
 

@@ -43,7 +43,4 @@
                                     <td class="border px-4 py-2">{{ $task->updated_at ? (new \Carbon\Carbon($task->updated_at))->format('Y-m-d H:i:s') : '未更新' }}</td>
                                 </tr>
                             @endforeach
-                       
-
-
 </x-app-layout>

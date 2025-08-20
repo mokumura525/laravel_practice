@@ -13,13 +13,13 @@ class TaskController extends Controller
         $tasks = Task::all();
         return view('admin.tasks.index', compact('tasks'));
     }
-     public function show($id)
+     public function detail($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
         $Task = Task::findOrFail($id);
 
-        // ビューに記事データを渡して表示
-        return view('admin.tasks.show', compact('tasks'));
+        // ビューにタスクデータを渡して表示
+        return view('admin.tasks.detail', compact('tasks'));
     }
     public function create()
     {
@@ -75,7 +75,7 @@ class TaskController extends Controller
         $Task->saveTask($request);
 
         // 記事一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.Tasks.index'))->with('success', '記事が正常に更新されました。');
+        return redirect(route('admin.Tasks.index'))->with('success', 'タスクが正常に更新されました。');
     }
 
       public function destroy($id)
@@ -87,35 +87,38 @@ class TaskController extends Controller
         $Task->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
 
         // 記事一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.Tasks.index'))->with('success', '記事が正常に削除されました。');
+        return redirect(route('admin.Tasks.index'))->with('success', 'タスクが正常に削除されました。');
     }
+
+
 
 
     /**
      * 投稿データに対するバリデーションルールを定義し、適用する
-     *
+     *content
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validateTask(Request $request)
     {
         $rules = [
-            'title' => 'required|max:255',
-            'body' => 'required',
-            'published_at' => 'nullable|date_format:Y-m-d\TH:i', // HTMLのdatetime-local形式に対応
+            'title' => 'required|max:100',
+            'content' => 'required|max:1000',
+            'deadline_at' => 'nullable|date_format:Y-m-d\TH:i', // HTMLのdatetime-local形式に対応
         ];
 
         $messages = [
             'title.required' => ':attributeは必須項目です。',
             'title.max' => ':attributeは:max文字以内で入力してください。',
-            'body.required' => ':attributeは必須項目です。',
-            'published_at.date_format' => ':attributeは正しい日時形式で入力してください。',
+            'content.required' => ':attributeは必須項目です。',
+            'content.max' => ':attributeは:max文字以内で入力してください。',
+            'deadline_at.date_format' => ':attributeは正しい日時形式で入力してください。',
         ];
         
         $attributes = [
             'title' => 'タイトル',
-            'body' => '本文',
-            'published_at' => '公開日時',
+            'content' => '本文',
+            'deadline_at' => '対応日時',
         ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);

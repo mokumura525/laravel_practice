@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('title');//必須
             $table->text('content');//必須
            
-            $table->unsignedTinyInteger('status')->default(1);   // 起票
-            $table->unsignedTinyInteger('priority')->default(3); // 中dateTime('support_at')->nullable(); // 必須
-     
-            $table->dateTime('sucreated_at')->nullable(); // 必須
-            $table->dateTime('updated_at')->nullable(); // 必須
-            $table->dateTime('deleted_at')->nullable(); // 必須
+            $table->string('status')->default();   // 起票
+            $table->string('priority')->default(); // 
+            $table->dateTime('deadline_at')->nullable(); // 必須
+            $table->dateTime('support_at')->nullable(); // 必須
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
