@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="mt-4">
                         <h3 class="text-lg font-bold mb-4">{{ $task->title }}</h3>
-                        <strong>本文:</strong>
+                        <strong>内容:</strong>
                         <p class="mt-2 whitespace-pre-line">{{ $task->content}}</p>
                         <p class="mb-2"><strong>ステータス:</strong> {{ $task->status }}</p>
                         <p class="mb-2"><strong>優先度:</strong> {{ $task->priority }}</p>
