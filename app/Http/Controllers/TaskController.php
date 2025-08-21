@@ -51,6 +51,8 @@ class TaskController extends Controller
         return view('admin.tasks.create', compact('task'));
     }
 
+
+
     public function update(Request $request, $id)
     {
         // バリデーション (新規作成時と同じ validateTask メソッドを再利用)
@@ -117,6 +119,8 @@ class TaskController extends Controller
             'content' => '本文',
             'deadline_at' => '対応日時',
         ];
+
+        
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
