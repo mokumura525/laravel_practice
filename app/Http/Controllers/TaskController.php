@@ -163,10 +163,8 @@ class TaskController extends Controller
         ];
 
         $messages = [
-            'title.required' => ':attributeは必須項目です。',
-            'title.max' => ':attributeは:max文字以内で入力してください。',
-            'content.required' => ':attributeは必須項目です。',
-            'content.max' => ':attributeは:max文字以内で入力してください。',
+            'required' => ':attributeは必須項目です。',
+            'max' => ':attributeは:max文字以内で入力してください。',
             'priority' => ':attributeは必須項目です。',
             'status' => ':attributeは必須項目です。',
             'deadline_at.date_format' => ':attributeは正しい日時形式で入力してください。',
