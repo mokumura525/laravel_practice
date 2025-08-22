@@ -36,6 +36,16 @@
                             <label for="content" class="block text-gray-700 text-sm font-bold mb-2">内容：</label>
                             <textarea name="content" id="content" rows="6" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('content', $task->content ?? '') }}</textarea>
                         </div>
+                        <div class="mb-6">
+                            <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">担当者：</label>
+                            <select name="user_id" id="user_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" {{ old('user_id', $task->user_id ?? '') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                      
                         <div class="mb-6">
                             <label for="deadline_at" class="block text-gray-700 text-sm font-bold mb-2">対応期限：</label>
@@ -50,10 +60,9 @@
                       <div class="mb-6">
                             <label for="priority" class="block text-gray-700 text-sm font-bold mb-2">優先度：</label>
                             <select name="priority" id="priority" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <option value="">選択してください</option>
-                                    @foreach (config('const.task.priority') ?? [] as $priority)
-                                        <option value="{{ $priority }}" {{ old('priority', $task->priority ?? '') === $priority ? 'selected' : '' }}>
-                                            {{ $priority }}
+                                    @foreach (config('const.task.priority') ?? [] as $key => $label)
+                                        <option value="{{ $key }}" {{ old('priority',  $task->priority ?? '') == $key ? 'selected' : '' }}>
+                                            {{ $label }}
                                         </option>
                                     @endforeach
                             </select>
@@ -62,8 +71,8 @@
                          <div class="mb-6">
                             <label for="status" class="block text-gray-700 text-sm font-bold mb-2">ステータス：</label>
                              <select name="status" id="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                @foreach (config('const.task.status') ?? [] as $status)
-                                    <option value="{{ $status }}" {{ old('status', $task->status ?? '') === $status ? 'selected' : '' }}>
+                                @foreach (config('const.task.status') ?? [] as $key => $status)
+                                    <option value="{{ $key }}" {{ old('status', $task->status ?? '') === $key ? 'selected' : '' }}>
                                         {{ $status }}
                                     </option>
                                 @endforeach

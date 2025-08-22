@@ -3,26 +3,56 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 
 class TaskController extends Controller
 {
+    /**
+     * タスク一覧を表示
+     *
+     * @return \Illuminate\View\View
+     */
+
     public function index()
     {
         $task = Task::all();
         return view('admin.tasks.index', compact('task'));
     }
+
+    /**
+     * タスクの詳細を表示
+     * @param int $id タスクのID
+     * @return \Illuminate\View\View
+     */
+
      public function detail($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
         $task = Task::findOrFail($id);
-        return view('admin.tasks.detail', compact('task'));
+        $users = User::all(); // 担当者一覧を取得
+        return view('admin.tasks.detail', compact('task', 'users'));
     }
+
+    /**
+     * タスクの新規作成フォームを表示
+     *
+     * @return \Illuminate\View\View
+     */
+
     public function create()
     {
-        return view('admin.tasks.create');
+        $users = User::all(); // 担当者一覧を取得
+        return view('admin.tasks.create', compact('users'));
     }
+    /**
+     * タスクを保存
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function store(Request $request)
     {
@@ -36,22 +66,40 @@ class TaskController extends Controller
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-
-        // Taskモデルのカスタムメソッドを使ってデータを保存
         $Task = new Task();
+
+        // ユーザーIDを設定（ログインユーザーのIDを使用）
+        $Task->user_id = Auth::id(); 
         // $request オブジェクトを直接 saveTask メソッドに渡す
         $Task->saveTask($request); 
 
+
         return redirect(route('admin.tasks.index'))->with('success', 'タスクが正常に投稿されました。');
     }
+    
+    /**
+     * タスクの編集フォームを表示
+     *
+     * @param int $id タスクのID
+     * @return \Illuminate\View\View
+     */
+
     public function edit($id)
     {
         // 指定IDの記事を取得。見つからなければ404エラー
         $task = Task::findOrFail($id);
-        return view('admin.tasks.create', compact('task'));
+        $users = User::all(); // 担当者一覧を取得
+
+        return view('admin.tasks.create', compact('task', 'users'));
     }
 
-
+    /**
+     * タスクを更新
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id タスクのID
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function update(Request $request, $id)
     {
@@ -76,6 +124,12 @@ class TaskController extends Controller
         // 記事一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('admin.tasks.index'))->with('success', 'タスクが正常に更新されました。');
     }
+
+    /**
+     * タスクを削除
+     * @param int $id タスクのID
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
       public function destroy($id)
     {
@@ -103,7 +157,9 @@ class TaskController extends Controller
         $rules = [
             'title' => 'required|max:100',
             'content' => 'required|max:1000',
-            'deadline_at' => 'nullable|date_format:Y-m-d\TH:i', // HTMLのdatetime-local形式に対応
+            'deadline_at' => 'nullable|date_format:Y-m-d\TH:i', 
+            'priority' => 'required', 
+            'status' => 'required', 
         ];
 
         $messages = [
@@ -111,6 +167,8 @@ class TaskController extends Controller
             'title.max' => ':attributeは:max文字以内で入力してください。',
             'content.required' => ':attributeは必須項目です。',
             'content.max' => ':attributeは:max文字以内で入力してください。',
+            'priority' => ':attributeは必須項目です。',
+            'status' => ':attributeは必須項目です。',
             'deadline_at.date_format' => ':attributeは正しい日時形式で入力してください。',
         ];
         

@@ -18,8 +18,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');//必須
             $table->text('content');//必須
+            $table->foreignId('user_id')->nullable(); // 担当者の外部キー制約
            
-            $table->string('status')->default();   // 起票
+            $table->string('status')->default();   // 
             $table->string('priority')->default(); // 
             $table->dateTime('deadline_at')->nullable(); // 必須
             $table->dateTime('support_at')->nullable(); // 必須
